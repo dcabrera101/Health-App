@@ -1,0 +1,10 @@
+
+{ 
+    "Patient ID" : 1234,
+    "Temperature" : 98.0,
+    "Blood Pressure" : [120, 80],
+    "Pulse" : 80,
+    "Oximeter": 98,
+    "Weight": 155.5,
+    "Glucometer": 100
+}
