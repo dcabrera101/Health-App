@@ -2,4 +2,17 @@
 
 ## Branching Strategy
 
-Work on a test branch every new phase and merge to main once done. Main will consist of the cummulative, working code. 
+All on main, the previous week's work was all but useless so no point in branching.
+
+
+## Status
+
+app.py: holds my current progress on creating APIs for managing the patients database
+
+test.py: testing calls to the APIs in app.py
+
+database.db: holds the patients
+
+venv/: virtual environment where I installed all the dependencies, for version control.
+
+nothing else is relevant, will clean up files after I reach a stopping point.

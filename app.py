@@ -1,7 +1,7 @@
 """
 TODO:
 -marshal output using marshmallow (particularly for PatientsResource)
--return Response with status code and content
+-^return Response with status code and content 
 -fix put method, current update results in 'database locked'
 -consider adding patch method
 -add blood pressure (consists of 2 values)
