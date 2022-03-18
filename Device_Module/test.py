@@ -37,6 +37,7 @@ readings = {
 print('update patient 1 readings:')
 response = requests.put(BASE + 'patients/1', readings)
 print(response.json())
+print(response)
 
 readings = {
     'temperature': 100.0,

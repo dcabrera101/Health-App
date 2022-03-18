@@ -71,7 +71,7 @@ class PatientResource(Resource):
                     updated_readings[key] = val
             db.session.query(PatientModel).filter(PatientModel.id == patientID).update(updated_readings) 
             db.session.commit()
-        return patient
+        return patient, 201
 
     # Read
     @marshal_with(patient_fields)
