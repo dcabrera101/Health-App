@@ -1,8 +1,8 @@
 """
 TODO:
 -marshal output using marshmallow
--edit response code to be more specific than just 200
 -split into application.py and APIS.py
+-fix bugs with put method
 """
 
 
@@ -12,7 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 application = Flask(__name__)
 api = Api(application)
-application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+application.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///patients.db'
 db = SQLAlchemy(application)
 
 class PatientModel(db.Model):
@@ -47,6 +47,7 @@ put_args.add_argument('gluco',type=float, help='Invalid Glucometer')
 # resource to CRUD a single patient
 class PatientResource(Resource):
     # Create/Update
+    # breaks if you pass no readings
     @marshal_with(patient_fields)
     def put(self,patientID):
         patient = PatientModel.query.get(patientID)
@@ -62,8 +63,9 @@ class PatientResource(Resource):
             )
             db.session.add(patient)
             db.session.commit()
+            return patient, 201
         else:
-            # need to fix, 'database locked'
+            # for some reason the response here is not JSON serializable
             updated_readings = {}
             for key in args.keys():
                 val = args[key]
@@ -71,13 +73,14 @@ class PatientResource(Resource):
                     updated_readings[key] = val
             db.session.query(PatientModel).filter(PatientModel.id == patientID).update(updated_readings) 
             db.session.commit()
-        return patient, 201
+            print(patient)
+            return patient, 204
 
     # Read
     @marshal_with(patient_fields)
     def get(self,patientID):
-        result = PatientModel.query.get_or_404(patientID)
-        return result
+        patients = PatientModel.query.get_or_404(patientID)
+        return patients, 200
 
     # Delete
     @marshal_with(patient_fields)
@@ -85,7 +88,7 @@ class PatientResource(Resource):
         patient = PatientModel.query.get_or_404(patientID)
         db.session.delete(patient)
         db.session.commit()
-        return patient
+        return patient, 200
 
 #resource to CRUD the entire database of patients
 class PatientsResource(Resource):
@@ -93,7 +96,7 @@ class PatientsResource(Resource):
     @marshal_with(patient_fields)
     def get(self):
         patients = PatientModel.query.all()
-        return patients
+        return patients, 200
     # delete
     @marshal_with(patient_fields)
     def delete(self):
@@ -101,7 +104,7 @@ class PatientsResource(Resource):
         for patient in patients:
             db.session.delete(patient)
         db.session.commit()
-        return patients
+        return patients, 200
         
 api.add_resource(PatientResource,'/patients/<int:patientID>')
 api.add_resource(PatientsResource,'/patients/')

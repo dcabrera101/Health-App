@@ -3,7 +3,8 @@
 
 import requests
 
-BASE = 'http://127.0.0.1:5000/'
+BASE = 'http://3.86.219.48:80/'
+
 
 print('read all:')
 response = requests.get(BASE + 'patients/')
@@ -29,9 +30,9 @@ readings = {
     'temperature': 99.0,
     # "bp" : [120, 80],
     'pulse': 80,
-    'oxi': 98,
+    'oxi': 1000,
     'weight': 155.5,
-    'gluco': 100
+    'gluco': 200
 }
 
 print('update patient 1 readings:')
@@ -45,7 +46,8 @@ readings = {
     'pulse': 80,
     'oxi': 98,
     'weight': 155.5,
-    'gluco': 100
+    'gluco': 100,
+    'name': 'daniel'
 }
 
 print('add patient 2 readings:')
