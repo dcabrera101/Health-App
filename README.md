@@ -9,6 +9,6 @@ Main holds working modules. Test holds modules getting developed/tested still.
 
 - device_module/ - done
 
-- chat module - in progress
+- chat module/ - done
 
-- AWS - in progress (got it on EC2 but havent figured out how to run the server there and call it from local machine)
+- "deployment" on AWS EC2 - done

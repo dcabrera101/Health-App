@@ -6,7 +6,7 @@ TODO:
 """
 
 
-from flask import Flask
+from flask import Flask, Response
 from flask_restful import Api,Resource, reqparse, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 
@@ -63,9 +63,8 @@ class PatientResource(Resource):
             )
             db.session.add(patient)
             db.session.commit()
-            return patient, 201
+            return Response(status = 201)
         else:
-            # for some reason the response here is not JSON serializable
             updated_readings = {}
             for key in args.keys():
                 val = args[key]
@@ -73,22 +72,20 @@ class PatientResource(Resource):
                     updated_readings[key] = val
             db.session.query(PatientModel).filter(PatientModel.id == patientID).update(updated_readings) 
             db.session.commit()
-            print(patient)
-            return patient, 204
-
+            print(type(patient))
+            return Response(status = 204)
     # Read
     @marshal_with(patient_fields)
     def get(self,patientID):
         patients = PatientModel.query.get_or_404(patientID)
         return patients, 200
-
     # Delete
     @marshal_with(patient_fields)
     def delete(self,patientID):
         patient = PatientModel.query.get_or_404(patientID)
         db.session.delete(patient)
         db.session.commit()
-        return patient, 200
+        return Response(status = 204)
 
 #resource to CRUD the entire database of patients
 class PatientsResource(Resource):
@@ -104,7 +101,7 @@ class PatientsResource(Resource):
         for patient in patients:
             db.session.delete(patient)
         db.session.commit()
-        return patients, 200
+        return Response(status = 204)
         
 api.add_resource(PatientResource,'/patients/<int:patientID>')
 api.add_resource(PatientsResource,'/patients/')
