@@ -1,4 +1,4 @@
-# Health-App
+# Medical-App
 
 ## Branching Strategy
 
